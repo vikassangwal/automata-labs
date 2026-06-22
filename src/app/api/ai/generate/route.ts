@@ -1,0 +1,71 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { getAIConfig, generateAIContent } from '@/lib/ai';
+import { verifyToken } from '@/lib/auth';
+
+export async function POST(request: Request) {
+  try {
+    const cookieHeader = request.headers.get('cookie') || '';
+    const tokenMatch = cookieHeader.match(/automata_auth_token=([^;]+)/);
+    const user = tokenMatch ? verifyToken(tokenMatch[1]) : null;
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const body = await request.json();
+    const { type, topic, content, title } = body;
+
+    const aiConfig = await getAIConfig();
+
+    if (!aiConfig) {
+      // Fallback responses if AI is not configured
+      let fallbackText = '';
+      if (type === 'title') fallbackText = `1. The Ultimate Guide to ${topic || 'This Topic'}\n2. Why ${topic || 'This'} is Important Now\n3. 10 Tips for ${topic || 'Success'}`;
+      else if (type === 'outline') fallbackText = `<h2>Introduction to ${topic}</h2>\n<p>Overview of the topic.</p>\n<h2>Key Concepts</h2>\n<ul><li>Point 1</li><li>Point 2</li></ul>\n<h2>Conclusion</h2>`;
+      else if (type === 'article') fallbackText = `<h2>Understanding ${title || topic}</h2>\n<p>This is a placeholder article generated because AI is not configured. Please go to Settings > AI Configuration to add an API key (OpenAI, Gemini, or Claude).</p>\n<h3>Why this matters</h3>\n<p>Configuring AI unlocks the full potential of Anti Gravity 2.0.</p>`;
+      else if (type === 'seo') fallbackText = `SEO Title: Guide to ${topic}\nSEO Description: Learn everything about ${topic}.\nKeywords: ${topic}, guide, tutorial`;
+      else if (type === 'improve') fallbackText = `[Improved] ${content}`;
+
+      return NextResponse.json({ result: fallbackText });
+    }
+
+    let systemPrompt = '';
+    let userPrompt = '';
+    let maxTokens = 2000;
+
+    switch (type) {
+      case 'title':
+        systemPrompt = 'You are an expert SEO copywriter. Generate 5 highly engaging, click-worthy, SEO-optimized blog post titles for the given topic. Return ONLY the titles, one per line.';
+        userPrompt = `Topic: ${topic}`;
+        maxTokens = 300;
+        break;
+      case 'outline':
+        systemPrompt = 'You are an expert content strategist. Generate a detailed blog post outline with HTML headings (h2, h3). Return ONLY the HTML outline.';
+        userPrompt = `Topic: ${topic}`;
+        maxTokens = 800;
+        break;
+      case 'article':
+        systemPrompt = 'You are an expert blog writer. Write a comprehensive, SEO-optimized article (1000+ words). Use appropriate HTML formatting (h2, h3, p, ul, li, strong, em). Ensure the tone is professional yet engaging. Do not include a title tag (h1), start with an h2 or introductory paragraph. Return ONLY the HTML content.';
+        userPrompt = `Title: ${title}\nTopic: ${topic}\n\nPlease write the full article.`;
+        maxTokens = 4000;
+        break;
+      case 'seo':
+        systemPrompt = 'You are an SEO expert. Given the blog content, generate an SEO title, an SEO description (under 160 characters), and a comma-separated list of keywords. Format the response EXACTLY as:\nSEO Title: [title]\nSEO Description: [description]\nKeywords: [keywords]';
+        userPrompt = `Content: ${content?.substring(0, 3000)}`;
+        maxTokens = 300;
+        break;
+      case 'improve':
+        systemPrompt = 'You are an expert editor. Improve the following text for readability, flow, grammar, and engagement while preserving the original meaning and HTML tags. Return ONLY the improved text.';
+        userPrompt = content || '';
+        maxTokens = 2000;
+        break;
+      default:
+        return NextResponse.json({ error: 'Invalid generation type' }, { status: 400 });
+    }
+
+    const generatedContent = await generateAIContent(aiConfig, systemPrompt, userPrompt, maxTokens);
+
+    return NextResponse.json({ result: generatedContent });
+  } catch (error: any) {
+    console.error('AI Generation error:', error);
+    return NextResponse.json({ error: error.message || 'Failed to generate content' }, { status: 500 });
+  }
+}
