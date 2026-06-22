@@ -21,10 +21,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [toast, setToast] = useState<{ message: string; visible: boolean } | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [userName, setUserName] = useState('Admin');
+  const [siteName, setSiteName] = useState('Anti Gravity');
 
   useEffect(() => {
     // Fetch current user
     fetch('/api/auth/login', { method: 'GET' }).catch(() => {});
+    
+    // Fetch settings for Site Name
+    fetch('/api/settings').then(r => r.json()).then(data => {
+      if (data && data.siteName) setSiteName(data.siteName);
+    }).catch(() => {});
     
     // Connect to Server-Sent Events stream
     let eventSource: EventSource;
@@ -171,12 +177,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               flexShrink: 0,
             }}
           >
-            AG
+            {siteName.substring(0, 2).toUpperCase()}
           </div>
           {!sidebarCollapsed && (
             <div>
               <h2 style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.3px', margin: 0, color: '#1d1d1f' }}>
-                Anti Gravity
+                {siteName}
               </h2>
               <span style={{ fontSize: '0.7rem', color: '#9ca3af', fontWeight: 500 }}>Admin Panel</span>
             </div>
