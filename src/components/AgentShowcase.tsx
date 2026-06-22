@@ -1,5 +1,4 @@
-'use client';
-import React, { useState } from 'react';
+import React from 'react';
 
 const capabilities = [
   'Find Leads', 'Analyze Businesses', 'Send Emails', 'Manage CRM', 
@@ -7,54 +6,18 @@ const capabilities = [
 ];
 
 export default function AgentShowcase() {
-  const [url, setUrl] = useState('');
-  const [email, setEmail] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
-  const [report, setReport] = useState<any>(null);
-  const [error, setError] = useState('');
-
-  const handleAnalyze = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!url || !email) return;
-    setAnalyzing(true); setReport(null); setError('');
-    try {
-      // Create a lead automatically
-      fetch('/api/crm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Website Analyzer Lead', email, website: url, source: 'ai_analyzer' })
-      });
-
-      // Run analysis
-      const res = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setReport(data);
-      } else {
-        setError('Could not analyze website. It might be blocking bots.');
-      }
-    } catch {
-      setError('Network error. Please try again.');
-    }
-    setAnalyzing(false);
-  };
-
   return (
     <section id="agents" className="section" style={{ background: 'var(--color-primary-midnight)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
       <div className="container">
         
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h2 style={{ fontSize: '3rem', marginBottom: '1rem' }}>See Our <span className="text-gradient">AI Agent</span> in Action</h2>
+          <h2 style={{ fontSize: '3rem', marginBottom: '1rem' }}>What Can Our <span className="text-gradient">AI Agents</span> Do?</h2>
           <p className="text-gray" style={{ maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem' }}>
-            Enter your website URL below and let our AI Agent analyze your site to give you actionable improvement suggestions in seconds.
+            Imagine having a digital employee that never sleeps, never takes a break, and executes flawlessly.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '4rem', alignItems: 'flex-start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '4rem', alignItems: 'center' }}>
           
           {/* Capabilities List */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -66,55 +29,58 @@ export default function AgentShowcase() {
             ))}
           </div>
 
-          {/* Interactive AI Agent Form */}
+          {/* Futuristic Dashboard Mockup */}
           <div className="glass-card" style={{ 
-            minHeight: '400px', 
+            height: '500px', 
             position: 'relative', 
             overflow: 'hidden', 
             border: '1px solid rgba(176, 38, 255, 0.3)',
-            boxShadow: '0 0 50px rgba(176, 38, 255, 0.1)',
-            padding: '2rem'
+            boxShadow: '0 0 50px rgba(176, 38, 255, 0.1)' 
           }}>
-            {!report ? (
-              <form onSubmit={handleAnalyze} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%', justifyContent: 'center' }}>
-                <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🤖</div>
-                  <h3 style={{ fontSize: '1.5rem' }}>Free AI Website Audit</h3>
-                  <p className="text-gray" style={{ fontSize: '0.9rem' }}>Find out what's stopping your website from converting.</p>
-                </div>
+            {/* Header */}
+            <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f56' }}></div>
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e' }}></div>
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27c93f' }}></div>
+              </div>
+              <span className="text-gray" style={{ fontSize: '0.8rem' }}>AI Command Protocol v2.0</span>
+            </div>
 
-                <input type="text" placeholder="https://yourwebsite.com" required value={url} onChange={e => setUrl(e.target.value)} style={{ padding: '1rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', width: '100%', outline: 'none' }} />
-                <input type="email" placeholder="Your Email Address" required value={email} onChange={e => setEmail(e.target.value)} style={{ padding: '1rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', width: '100%', outline: 'none' }} />
-                
-                {error && <p style={{ color: '#ff5f56', fontSize: '0.85rem', textAlign: 'center' }}>{error}</p>}
-
-                <button type="submit" className="btn-primary" disabled={analyzing} style={{ padding: '1rem', opacity: analyzing ? 0.7 : 1, width: '100%' }}>
-                  {analyzing ? 'Scanning Website...' : 'Analyze My Website'}
-                </button>
-              </form>
-            ) : (
-              <div style={{ animation: 'slideUpFade 0.5s ease' }}>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#25D366' }}>Analysis Complete!</h3>
-                <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                  <p style={{ fontWeight: 600, marginBottom: '0.5rem' }}>AI Performance Score: {report.score}/100</p>
-                  <p className="text-gray" style={{ fontSize: '0.9rem' }}>We found a few areas where you can improve:</p>
-                </div>
-
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '2rem' }}>
-                  {report.flaws.slice(0, 3).map((flaw: string, idx: number) => (
-                    <li key={idx} style={{ display: 'flex', gap: '0.5rem', fontSize: '0.9rem', color: '#ff5f56' }}>
-                      <span>⚠️</span> {flaw}
-                    </li>
-                  ))}
-                </ul>
-
-                <div style={{ padding: '1rem', background: 'rgba(176, 38, 255, 0.1)', border: '1px solid var(--color-accent-purple)', borderRadius: '8px', textAlign: 'center' }}>
-                  <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Our team has received this report. We will email you a custom proposal to fix these issues.</p>
-                  <button onClick={() => setReport(null)} className="btn-primary" style={{ padding: '0.6rem 1.5rem' }}>Scan Another Site</button>
+            {/* Workflow Diagram Mock */}
+            <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem', height: '100%' }}>
+              
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ padding: '1rem 2rem', background: 'rgba(0, 229, 255, 0.1)', border: '1px solid var(--color-accent-cyan)', borderRadius: '50px', color: 'var(--color-accent-cyan)' }}>
+                  Incoming Request Detected
                 </div>
               </div>
-            )}
+
+              <div style={{ width: '2px', height: '30px', background: 'var(--color-accent-cyan)', margin: '0 auto', opacity: 0.5 }}></div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <div className="glass-card" style={{ padding: '1rem', width: '150px', textAlign: 'center', borderColor: 'var(--color-accent-purple)' }}>
+                  <p style={{ fontSize: '0.8rem' }}>Analyze Intent</p>
+                </div>
+                <div className="glass-card" style={{ padding: '1rem', width: '150px', textAlign: 'center', borderColor: 'var(--color-accent-purple)' }}>
+                  <p style={{ fontSize: '0.8rem' }}>Fetch CRM Data</p>
+                </div>
+                <div className="glass-card" style={{ padding: '1rem', width: '150px', textAlign: 'center', borderColor: 'var(--color-accent-purple)' }}>
+                  <p style={{ fontSize: '0.8rem' }}>Generate Draft</p>
+                </div>
+              </div>
+
+              <div style={{ width: '2px', height: '30px', background: 'var(--color-accent-purple)', margin: '0 auto', opacity: 0.5 }}></div>
+
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ padding: '1rem 2rem', background: 'rgba(176, 38, 255, 0.1)', border: '1px solid var(--color-accent-purple)', borderRadius: '50px', color: 'var(--color-accent-purple)' }}>
+                  Action Executed Successfully
+                </div>
+              </div>
+
+            </div>
           </div>
+
         </div>
       </div>
     </section>
