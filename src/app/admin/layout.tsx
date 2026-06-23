@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation';
 const sidebarItems = [
   { name: 'Dashboard', path: '/admin', icon: '📊' },
   { name: 'Blog Management', path: '/admin/blog', icon: '📝' },
-  { name: 'AI Auto-Blogging', path: '/admin/auto-blog', icon: '🤖' },
   { name: 'CRM & Lead Management', path: '/admin/crm', icon: '💼' },
+  { name: 'AI Email Hub', path: '/admin/inbox', icon: '📥' },
+  { name: 'Website Campaigns', path: '/admin/campaigns', icon: '🚀' },
   { name: 'AI Outreach Hub', path: '/admin/outreach', icon: '📡' },
   { name: 'AI Agents', path: '/admin/agents', icon: '⚡' },
   { name: 'Services', path: '/admin/services', icon: '🛠️' },

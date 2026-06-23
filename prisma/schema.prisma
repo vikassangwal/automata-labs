@@ -142,39 +142,42 @@ model AdPlacement {
 }
 
 // ==========================================
-// AUTO-BLOGGING
+// EMAIL HUB & CAMPAIGNS
 // ==========================================
-model AutoBlogKeyword {
-  id        String    @id @default(uuid())
-  keyword   String
-  niche     String?
-  status    String    @default("pending")  // pending, used, failed
-  priority  Int       @default(0)
-  usedAt    DateTime?
-  postId    String?   // The post that was generated from this keyword
-  createdAt DateTime  @default(now())
+model EmailSettings {
+  id          String   @id @default("default")
+  imapHost    String   @default("imap.gmail.com")
+  imapPort    Int      @default(993)
+  smtpHost    String   @default("smtp.gmail.com")
+  smtpPort    Int      @default(465)
+  emailUser   String   @default("")
+  appPassword String   @default("")
+  updatedAt   DateTime @updatedAt
 }
 
-model AutoBlogLog {
-  id          String   @id @default(uuid())
-  keyword     String
-  title       String?
-  status      String   // success, failed
-  postId      String?
-  error       String?
-  createdAt   DateTime @default(now())
+model InboxMessage {
+  id        String   @id @default(uuid())
+  messageId String   @unique
+  subject   String?
+  from      String
+  to        String
+  date      DateTime
+  text      String?
+  html      String?
+  isRead    Boolean  @default(false)
+  isReplied Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
-model AutoBlogSettings {
-  id              String   @id @default("default")
-  isActive        Boolean  @default(false)
-  frequency       String   @default("daily")  // hourly, every6h, every12h, daily, weekly
-  maxPostsPerRun  Int      @default(1)
-  maxPostsPerDay  Int      @default(5)
-  lastRunAt       DateTime?
-  imageSource     String   @default("unsplash")  // unsplash, ai, none
-  autoPublish     Boolean  @default(true)
-  updatedAt       DateTime @updatedAt
+model Campaign {
+  id        String   @id @default(uuid())
+  name      String
+  target    String   @default("no_website")
+  status    String   @default("draft") // draft, sending, completed
+  sentCount Int      @default(0)
+  totalCount Int     @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ==========================================
