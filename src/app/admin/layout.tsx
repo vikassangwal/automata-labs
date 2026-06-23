@@ -33,31 +33,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       if (data && data.siteName) setSiteName(data.siteName);
     }).catch(() => {});
     
-    // Connect to Server-Sent Events stream
-    let eventSource: EventSource;
-    try {
-      eventSource = new EventSource('/api/alerts/stream');
-      eventSource.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          if (data.type === 'new-lead') {
-            setToast({
-              message: `🎯 New Lead: ${data.data.name} just contacted you!`,
-              visible: true,
-            });
-            setTimeout(() => {
-              setToast((prev) => (prev ? { ...prev, visible: false } : null));
-            }, 5000);
-          }
-        } catch (err) {
-          console.error('Failed to parse SSE data', err);
-        }
-      };
-    } catch {}
-
-    return () => {
-      if (eventSource!) eventSource.close();
-    };
+    // Removed SSE stream as it exhausts Vercel Serverless connections and causes extreme slowness.
+    // Leads will be visible in the CRM menu.
+    return () => {};
   }, []);
 
   const handleLogout = () => {
