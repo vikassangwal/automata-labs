@@ -4,6 +4,13 @@ import React, { useEffect, useState } from 'react';
 export default function PortfolioPage() {
   const [projects, setProjects] = useState<any[]>([]);
 
+  const DEFAULT_PROJECTS = [
+    { id: '1', title: 'Automata Labs', category: 'AI & SaaS', websiteLink: 'https://automata-labs.vercel.app/' },
+    { id: '2', title: 'AI Booking Agent', category: 'AI Automation', websiteLink: 'https://ai-booking-agent-r2go.onrender.com/' },
+    { id: '3', title: 'Study FinTech', category: 'EdTech', websiteLink: 'https://studyfintech.vercel.app/' },
+    { id: '4', title: 'VK Fort', category: 'Corporate & Security', websiteLink: 'https://vkfort.vercel.app/' }
+  ];
+
   useEffect(() => {
     fetch('/api/portfolio')
       .then(async (res) => {
@@ -11,9 +18,12 @@ export default function PortfolioPage() {
         return res.json();
       })
       .then(data => {
-        if (Array.isArray(data)) setProjects(data);
+        if (Array.isArray(data)) setProjects([...DEFAULT_PROJECTS, ...data]);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setProjects(DEFAULT_PROJECTS);
+      });
   }, []);
 
   return (
@@ -36,10 +46,18 @@ export default function PortfolioPage() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '3rem' }}>
               {projects.map((project, index) => (
-                <div key={project.id || index} className={`minimal-card animate-slide-up delay-${(index % 3) + 1}`} style={{ height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', background: 'var(--color-bg-primary)' }}>
-                  <div style={{ padding: '1rem', borderTop: '1px solid var(--color-border)' }}>
-                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.2rem' }}>{project.category}</p>
-                    <h3 style={{ fontSize: '1.5rem' }}>{project.title}</h3>
+                <div key={project.id || index} className={`minimal-card animate-slide-up delay-${(index % 3) + 1}`} style={{ height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', background: 'var(--color-bg-primary)', position: 'relative', overflow: 'hidden' }}>
+                  {project.websiteLink && (
+                    <a href={project.websiteLink} target="_blank" rel="noopener noreferrer" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10 }}></a>
+                  )}
+                  <div style={{ padding: '1.5rem', borderTop: '1px solid var(--color-border)', zIndex: 5, background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)' }}>
+                    <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '1px' }}>{project.category}</p>
+                    <h3 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>{project.title}</h3>
+                    {project.websiteLink && (
+                      <span style={{ color: 'var(--color-primary)', fontWeight: 500, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        Visit Website <span>→</span>
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
