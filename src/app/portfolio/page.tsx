@@ -1,9 +1,9 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { prisma } from '@/lib/prisma';
 
-export default function PortfolioPage() {
-  const [projects, setProjects] = useState<any[]>([]);
+export const revalidate = 60;
 
+export default async function PortfolioPage() {
   const DEFAULT_PROJECTS = [
     { id: '1', title: 'Automata Labs', category: 'AI & SaaS', websiteLink: 'https://automata-labs.vercel.app/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://automata-labs.vercel.app/' },
     { id: '2', title: 'AI Booking Agent', category: 'AI Automation', websiteLink: 'https://ai-booking-agent-r2go.onrender.com/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://ai-booking-agent-r2go.onrender.com/' },
@@ -11,20 +11,17 @@ export default function PortfolioPage() {
     { id: '4', title: 'VK Fort', category: 'Corporate & Security', websiteLink: 'https://vkfort.vercel.app/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://vkfort.vercel.app/' }
   ];
 
-  useEffect(() => {
-    fetch('/api/portfolio')
-      .then(async (res) => {
-        if (!res.ok) return [];
-        return res.json();
-      })
-      .then(data => {
-        if (Array.isArray(data)) setProjects([...DEFAULT_PROJECTS, ...data]);
-      })
-      .catch(err => {
-        console.error(err);
-        setProjects(DEFAULT_PROJECTS);
-      });
-  }, []);
+  let dbProjects = [];
+  try {
+    dbProjects = await prisma.portfolio.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (error) {
+    console.error('Failed to fetch portfolio projects', error);
+  }
+
+  const projects = [...DEFAULT_PROJECTS, ...dbProjects];
+
 
   return (
     <main style={{ paddingTop: '100px', minHeight: '100vh' }}>
