@@ -116,10 +116,10 @@ export async function POST(req: Request) {
             messageId,
             subject: mail.subject,
             from: mail.from?.text || 'Unknown',
-            to: mail.to?.text || settings.emailUser,
+            to: (Array.isArray(mail.to) ? mail.to[0]?.text : mail.to?.text) || settings.emailUser,
             date: mail.date || new Date(),
-            text: mail.text,
-            html: mail.html,
+            text: typeof mail.text === 'string' ? mail.text : '',
+            html: typeof mail.html === 'string' ? mail.html : '',
           }
         });
         synced++;
