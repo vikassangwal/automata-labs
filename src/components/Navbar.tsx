@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function Navbar() {
+export default function Navbar({ siteName = "Automata Labs." }: { siteName?: string }) {
   return (
     <nav style={{ 
       position: 'fixed', 
@@ -19,7 +19,7 @@ export default function Navbar() {
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{ width: '20px', height: '20px', background: 'var(--color-text-primary)', borderRadius: '4px' }}></div>
           <span style={{ fontWeight: 700, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
-            Automata Labs.
+            {siteName}
           </span>
         </Link>
 

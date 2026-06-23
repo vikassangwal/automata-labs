@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
 
-export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
+export default function ClientLayoutWrapper({ children, siteName }: { children: React.ReactNode, siteName: string }) {
   const pathname = usePathname();
   
   // Do not show the main website's Navbar, Footer, and ChatWidget on Admin pages
@@ -16,9 +16,9 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
 
   return (
     <>
-      <Navbar />
+      <Navbar siteName={siteName} />
       {children}
-      <Footer />
+      <Footer siteName={siteName} />
       <ChatWidget />
     </>
   );

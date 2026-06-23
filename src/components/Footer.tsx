@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function Footer() {
+export default function Footer({ siteName = "Automata Labs." }: { siteName?: string }) {
   return (
     <footer style={{ background: 'var(--color-bg-secondary)', borderTop: '1px solid var(--color-border)', padding: '4rem 0 2rem 0', marginTop: 'auto' }}>
       <div className="container">
@@ -13,7 +13,7 @@ export default function Footer() {
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
               <div style={{ width: '24px', height: '24px', borderRadius: '4px', background: 'var(--color-text-primary)' }}></div>
               <span style={{ fontWeight: 700, fontSize: '1.2rem', letterSpacing: '-0.5px' }}>
-                Automata Labs.
+                {siteName}
               </span>
             </Link>
             <p className="text-gray" style={{ fontSize: '0.9rem', maxWidth: '300px', color: 'var(--color-text-secondary)' }}>
@@ -51,7 +51,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <p className="text-gray" style={{ fontSize: '0.8rem' }}>&copy; {new Date().getFullYear()} Automata Labs. All rights reserved.</p>
+          <p className="text-gray" style={{ fontSize: '0.8rem' }}>&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <span className="text-gray" style={{ fontSize: '0.8rem', cursor: 'pointer' }}>Privacy Policy</span>
             <span className="text-gray" style={{ fontSize: '0.8rem', cursor: 'pointer' }}>Terms of Service</span>
