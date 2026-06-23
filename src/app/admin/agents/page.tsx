@@ -7,12 +7,17 @@ export default function AgentsManagementPage() {
   const [report, setReport] = useState('');
   const [error, setError] = useState('');
 
+  const [email, setEmail] = useState('');
+  const [sending, setSending] = useState(false);
+  const [emailStatus, setEmailStatus] = useState('');
+
   const handleAudit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url) return;
     setLoading(true);
     setError('');
     setReport('');
+    setEmailStatus('');
 
     try {
       const res = await fetch('/api/agents/audit', {
@@ -31,6 +36,32 @@ export default function AgentsManagementPage() {
       setError('Network error. Please try again.');
     }
     setLoading(false);
+  };
+
+  const handleSendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !report) return;
+    setSending(true);
+    setEmailStatus('');
+
+    try {
+      const res = await fetch('/api/agents/audit/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetEmail: email, websiteUrl: url, report }),
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        setEmailStatus('✅ Email sent successfully to the prospect!');
+        setEmail('');
+      } else {
+        setEmailStatus(`❌ ${data.error || 'Failed to send email'}`);
+      }
+    } catch (err) {
+      setEmailStatus('❌ Network error. Please try again.');
+    }
+    setSending(false);
   };
 
   return (
@@ -101,10 +132,47 @@ export default function AgentsManagementPage() {
                   borderRadius: '12px',
                   whiteSpace: 'pre-wrap',
                   lineHeight: '1.6',
-                  fontFamily: 'system-ui, sans-serif'
+                  fontFamily: 'system-ui, sans-serif',
+                  marginBottom: '2rem'
                 }}
               >
                 {report}
+              </div>
+
+              {/* Email Prospect Section */}
+              <div style={{ padding: '1.5rem', background: 'rgba(139, 92, 246, 0.05)', borderRadius: '12px', border: '1px dashed #8b5cf6' }}>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  📧 Email this Report to Prospect
+                </h4>
+                <form onSubmit={handleSendEmail} style={{ display: 'flex', gap: '1rem' }}>
+                  <input 
+                    type="email" 
+                    placeholder="prospect@company.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    style={{ 
+                      flex: 1, 
+                      padding: '0.8rem', 
+                      borderRadius: '6px', 
+                      border: '1px solid var(--color-border)', 
+                      outline: 'none'
+                    }} 
+                  />
+                  <button 
+                    type="submit" 
+                    disabled={sending}
+                    className="btn-primary" 
+                    style={{ padding: '0 1.5rem', opacity: sending ? 0.7 : 1, background: '#8b5cf6', borderColor: '#8b5cf6' }}
+                  >
+                    {sending ? 'Sending...' : 'Send Email 🚀'}
+                  </button>
+                </form>
+                {emailStatus && (
+                  <p style={{ marginTop: '1rem', fontSize: '0.9rem', fontWeight: 500, color: emailStatus.includes('✅') ? '#059669' : '#dc2626' }}>
+                    {emailStatus}
+                  </p>
+                )}
               </div>
             </div>
           )}

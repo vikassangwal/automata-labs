@@ -29,18 +29,19 @@ export async function POST(request: Request) {
     const noStyles = noScripts.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ');
     const cleanText = noStyles.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').substring(0, 5000); // Send max 5000 chars
 
-    const prompt = `You are a strict and expert Website Auditor. I am giving you the raw text extracted from a website URL: ${url}. 
-Your job is to find faults, bugs, missing SEO tags, and UI/UX issues based on this text.
+    const prompt = `You are a strict but helpful Expert Website Auditor working for an agency. I am giving you the raw text extracted from a prospective client's website URL: ${url}. 
+Your job is to find faults, bugs, missing SEO tags, and UI/UX issues, AND provide actionable suggestions on how our agency can fix them.
 
 Website Text Content:
 ${cleanText}
 
-If the text is very short, the website might be a client-side React/Next.js app, just point that out and audit whatever you can.
-Provide a professional, brutal, but helpful audit report. Use clear markdown headings, bullet points, and highlight critical issues. Do not be overly polite. Speak like a senior tech auditor. Focus on:
-1. SEO & Meta data (if visible)
-2. Content structure & copywriting flaws
-3. Conversion Rate Optimization (CRO) - Is there a clear Call to Action?
-4. Technical observations.`;
+Provide a highly professional, client-friendly audit report. Use clear markdown headings and bullet points. Focus on:
+1. SEO & Meta data issues (with suggestions to fix).
+2. Content & Copywriting flaws (with suggestions to improve conversion).
+3. UI/UX & Technical observations.
+4. "How We Can Help" - A small concluding section explaining how our agency can solve these problems quickly.
+
+Make it sound like a premium consulting report.`;
 
     const aiReport = await generateWithAI(prompt);
 
