@@ -1,6 +1,8 @@
 import React from 'react';
 import { prisma } from '@/lib/prisma';
 
+export const revalidate = 60; // Enable ISR (cache for 60 seconds)
+
 export default async function Home() {
   // Fetch About content
   const aboutSetting = await prisma.aboutSetting.findUnique({ where: { id: 'default' } });
