@@ -5,10 +5,10 @@ export default function PortfolioPage() {
   const [projects, setProjects] = useState<any[]>([]);
 
   const DEFAULT_PROJECTS = [
-    { id: '1', title: 'Automata Labs', category: 'AI & SaaS', websiteLink: 'https://automata-labs.vercel.app/' },
-    { id: '2', title: 'AI Booking Agent', category: 'AI Automation', websiteLink: 'https://ai-booking-agent-r2go.onrender.com/' },
-    { id: '3', title: 'Study FinTech', category: 'EdTech', websiteLink: 'https://studyfintech.vercel.app/' },
-    { id: '4', title: 'VK Fort', category: 'Corporate & Security', websiteLink: 'https://vkfort.vercel.app/' }
+    { id: '1', title: 'Automata Labs', category: 'AI & SaaS', websiteLink: 'https://automata-labs.vercel.app/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://automata-labs.vercel.app/' },
+    { id: '2', title: 'AI Booking Agent', category: 'AI Automation', websiteLink: 'https://ai-booking-agent-r2go.onrender.com/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://ai-booking-agent-r2go.onrender.com/' },
+    { id: '3', title: 'Study FinTech', category: 'EdTech', websiteLink: 'https://studyfintech.vercel.app/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://studyfintech.vercel.app/' },
+    { id: '4', title: 'VK Fort', category: 'Corporate & Security', websiteLink: 'https://vkfort.vercel.app/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://vkfort.vercel.app/' }
   ];
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PortfolioPage() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '3rem' }}>
               {projects.map((project, index) => (
-                <div key={project.id || index} className={`minimal-card animate-slide-up delay-${(index % 3) + 1}`} style={{ height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', background: 'var(--color-bg-primary)', position: 'relative', overflow: 'hidden' }}>
+                <div key={project.id || index} className={`minimal-card animate-slide-up delay-${(index % 3) + 1}`} style={{ height: '350px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', background: 'var(--color-bg-primary)', position: 'relative', overflow: 'hidden', backgroundImage: `url(${project.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}>
                   {project.websiteLink && (
                     <a href={project.websiteLink} target="_blank" rel="noopener noreferrer" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10 }}></a>
                   )}
