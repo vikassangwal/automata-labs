@@ -72,6 +72,22 @@ export default function UsersManagementPage() {
     setChanging(false);
   };
 
+  const handleRemoveUser = async (userId: string, email: string) => {
+    if (!window.confirm(`Are you sure you want to remove ${email}?`)) return;
+    try {
+      const res = await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (res.ok) {
+        alert('User removed successfully');
+        fetchUsers();
+      } else {
+        alert(data.error || 'Failed to remove user');
+      }
+    } catch {
+      alert('Network error');
+    }
+  };
+
   const inputStyle = { width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-border)', outline: 'none', background: 'var(--color-bg-secondary)', marginBottom: '1rem' };
   const labelStyle = { display: 'block', fontSize: '0.85rem', marginBottom: '0.4rem', fontWeight: 600, color: 'var(--color-text-secondary)' };
 
@@ -141,11 +157,12 @@ export default function UsersManagementPage() {
               <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.9rem' }}>Email</th>
               <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.9rem' }}>Role</th>
               <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.9rem' }}>Joined Date</th>
+              <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.9rem', textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={4} style={{ padding: '2rem', textAlign: 'center' }}>Loading...</td></tr>
+              <tr><td colSpan={5} style={{ padding: '2rem', textAlign: 'center' }}>Loading...</td></tr>
             ) : (
               users.map(user => (
                 <tr key={user.id} style={{ borderTop: '1px solid var(--color-border)' }}>
@@ -157,6 +174,14 @@ export default function UsersManagementPage() {
                     </span>
                   </td>
                   <td style={{ padding: '1rem 1.5rem', color: 'var(--color-text-secondary)', fontSize: '0.85rem' }}>{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
+                    <button 
+                      onClick={() => handleRemoveUser(user.id, user.email)}
+                      style={{ background: 'transparent', border: '1px solid #ef4444', color: '#ef4444', padding: '0.4rem 0.8rem', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                    >
+                      Remove
+                    </button>
+                  </td>
                 </tr>
               ))
             )}
