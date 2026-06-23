@@ -1,33 +1,127 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 
 export default function AgentsManagementPage() {
-  const agents = [
-    { id: 1, name: 'SalesBot', type: 'Lead Generation', status: 'Active', load: '45%' },
-    { id: 2, name: 'SupportGPT', type: 'Customer Support', status: 'Active', load: '82%' },
-    { id: 3, name: 'DataScraper', type: 'Data Extraction', status: 'Paused', load: '0%' },
-  ];
+  const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [report, setReport] = useState('');
+  const [error, setError] = useState('');
+
+  const handleAudit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!url) return;
+    setLoading(true);
+    setError('');
+    setReport('');
+
+    try {
+      const res = await fetch('/api/agents/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url.startsWith('http') ? url : `https://${url}` }),
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        setReport(data.report);
+      } else {
+        setError(data.error || 'Failed to audit website');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+    }
+    setLoading(false);
+  };
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2rem', letterSpacing: '-0.5px' }}>AI Agents</h1>
-        <button className="btn-primary" style={{ padding: '0.6rem 1.2rem' }}>Deploy New Agent</button>
+        <div>
+          <h1 style={{ fontSize: '2rem', letterSpacing: '-0.5px', marginBottom: '0.5rem' }}>AI Agents</h1>
+          <p style={{ color: 'var(--color-text-secondary)' }}>Deploy specialized AI agents to automate your workflow.</p>
+        </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-        {agents.map((agent) => (
-          <div key={agent.id} className="minimal-card" style={{ padding: '1.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h3 style={{ fontSize: '1.2rem' }}>{agent.name}</h3>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: agent.status === 'Active' ? '#34c759' : '#ff3b30' }}></div>
-            </div>
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>{agent.type}</p>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>System Load: {agent.load}</span>
-              <button style={{ background: 'transparent', border: 'none', color: 'var(--color-accent)', cursor: 'pointer', fontWeight: 500, fontSize: '0.8rem' }}>Configure</button>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
+        
+        {/* Website Auditor Agent */}
+        <div className="minimal-card" style={{ padding: '2rem', borderTop: '4px solid #8b5cf6' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <div style={{ fontSize: '2rem' }}>🕵️‍♂️</div>
+            <div>
+              <h2 style={{ fontSize: '1.4rem' }}>Website Auditor Agent</h2>
+              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>Status: <span style={{ color: '#34c759', fontWeight: 600 }}>● Active</span></p>
             </div>
           </div>
-        ))}
+          
+          <p style={{ marginBottom: '2rem', color: 'var(--color-text-secondary)' }}>
+            Enter any website URL below. This AI agent will visit the site, read its code/content, and generate a brutal audit report highlighting SEO flaws, missing features, and UI/UX issues.
+          </p>
+
+          <form onSubmit={handleAudit} style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+            <input 
+              type="text" 
+              placeholder="https://example.com" 
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+              style={{ 
+                flex: 1, 
+                padding: '1rem', 
+                borderRadius: '8px', 
+                border: '1px solid var(--color-border)', 
+                background: 'var(--color-bg-secondary)',
+                fontSize: '1rem',
+                outline: 'none'
+              }} 
+            />
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="btn-primary" 
+              style={{ padding: '0 2rem', opacity: loading ? 0.7 : 1 }}
+            >
+              {loading ? 'Auditing Website...' : 'Start Audit'}
+            </button>
+          </form>
+
+          {error && (
+            <div style={{ padding: '1rem', background: '#fee2e2', color: '#b91c1c', borderRadius: '8px', marginBottom: '1rem' }}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          {report && (
+            <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border)' }}>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: '#8b5cf6' }}>📄 AI Audit Report</h3>
+              <div 
+                style={{ 
+                  background: 'var(--color-bg-secondary)', 
+                  padding: '2rem', 
+                  borderRadius: '12px',
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: '1.6',
+                  fontFamily: 'system-ui, sans-serif'
+                }}
+              >
+                {report}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Coming Soon Agents */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div className="minimal-card" style={{ opacity: 0.6 }}>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>🤖 Social Media Manager Agent</h3>
+            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>Status: Paused (Coming Soon)</p>
+          </div>
+          <div className="minimal-card" style={{ opacity: 0.6 }}>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>📞 Support Chatbot Agent</h3>
+            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>Status: Paused (Coming Soon)</p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
