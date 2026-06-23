@@ -98,42 +98,42 @@ export default function InboxPage() {
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid #e5e7eb', paddingBottom: '1rem' }}>
-        <button onClick={() => setTab('inbox')} style={{ padding: '0.5rem 1rem', background: tab === 'inbox' ? '#0066cc' : 'transparent', color: tab === 'inbox' ? '#fff' : '#6b7280', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}>
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '1rem' }}>
+        <button onClick={() => setTab('inbox')} style={{ padding: '0.5rem 1rem', background: tab === 'inbox' ? '#0066cc' : 'transparent', color: tab === 'inbox' ? '#fff' : 'var(--color-text-secondary)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}>
           Inbox
         </button>
-        <button onClick={() => setTab('settings')} style={{ padding: '0.5rem 1rem', background: tab === 'settings' ? '#0066cc' : 'transparent', color: tab === 'settings' ? '#fff' : '#6b7280', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}>
+        <button onClick={() => setTab('settings')} style={{ padding: '0.5rem 1rem', background: tab === 'settings' ? '#0066cc' : 'transparent', color: tab === 'settings' ? '#fff' : 'var(--color-text-secondary)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}>
           IMAP/SMTP Settings
         </button>
       </div>
 
       {tab === 'settings' && (
-        <div style={{ background: '#fff', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
+        <div style={{ background: 'var(--color-bg-secondary)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-border)' }}>
           <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Connect Your Email Account</h2>
-          <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '2rem' }}>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', marginBottom: '2rem' }}>
             To allow the AI to read your incoming emails and send automatic replies, provide your IMAP/SMTP credentials. 
             If you are using Gmail, you must generate an <strong>App Password</strong>.
           </p>
           <form onSubmit={saveSettings} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '500px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem' }}>Email Address</label>
-              <input type="email" required value={settings.emailUser} onChange={(e) => setSettings({...settings, emailUser: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e5e7eb' }} />
+              <input type="email" required value={settings.emailUser} onChange={(e) => setSettings({...settings, emailUser: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)' }} />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem' }}>App Password</label>
-              <input type="password" required value={settings.appPassword} onChange={(e) => setSettings({...settings, appPassword: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e5e7eb' }} placeholder="xxxx xxxx xxxx xxxx" />
+              <input type="password" required value={settings.appPassword} onChange={(e) => setSettings({...settings, appPassword: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)' }} placeholder="xxxx xxxx xxxx xxxx" />
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <div style={{ flex: 1 }}>
                 <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem' }}>IMAP Host</label>
-                <input type="text" value={settings.imapHost} onChange={(e) => setSettings({...settings, imapHost: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e5e7eb' }} />
+                <input type="text" value={settings.imapHost} onChange={(e) => setSettings({...settings, imapHost: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)' }} />
               </div>
               <div style={{ flex: 1 }}>
                 <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, marginBottom: '0.5rem' }}>SMTP Host</label>
-                <input type="text" value={settings.smtpHost} onChange={(e) => setSettings({...settings, smtpHost: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e5e7eb' }} />
+                <input type="text" value={settings.smtpHost} onChange={(e) => setSettings({...settings, smtpHost: e.target.value})} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--color-bg-primary)', color: 'var(--color-text-primary)' }} />
               </div>
             </div>
-            <button type="submit" disabled={savingSettings} style={{ background: '#1d1d1f', color: '#fff', padding: '1rem', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 600, marginTop: '1rem' }}>
+            <button type="submit" disabled={savingSettings} style={{ background: '#0066cc', color: '#fff', padding: '1rem', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 600, marginTop: '1rem' }}>
               {savingSettings ? 'Saving...' : 'Save Configuration'}
             </button>
           </form>
@@ -141,28 +141,28 @@ export default function InboxPage() {
       )}
 
       {tab === 'inbox' && (
-        <div style={{ background: '#fff', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+        <div style={{ background: 'var(--color-bg-secondary)', borderRadius: '12px', border: '1px solid var(--color-border)', overflow: 'hidden' }}>
           {loading ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#6b7280' }}>Loading emails...</div>
+            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>Loading emails...</div>
           ) : messages.length === 0 ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#6b7280' }}>
+            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
               <p>No emails found.</p>
               <p style={{ fontSize: '0.8rem' }}>Make sure your IMAP settings are configured and click "Sync Emails Now".</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {messages.map((msg) => (
-                <div key={msg.id} style={{ padding: '1.5rem', borderBottom: '1px solid #f3f4f6', display: 'flex', flexDirection: 'column', gap: '0.5rem', background: msg.isRead ? '#fff' : '#f0f9ff' }}>
+                <div key={msg.id} style={{ padding: '1.5rem', borderBottom: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem', background: msg.isRead ? 'transparent' : 'rgba(0, 102, 204, 0.1)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <h3 style={{ fontSize: '1rem', fontWeight: msg.isRead ? 500 : 700 }}>{msg.subject || '(No Subject)'}</h3>
-                    <span style={{ fontSize: '0.8rem', color: '#9ca3af' }}>{new Date(msg.date).toLocaleString()}</span>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{new Date(msg.date).toLocaleString()}</span>
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>From: <strong>{msg.from}</strong></div>
-                  <div style={{ fontSize: '0.9rem', color: '#374151', marginTop: '0.5rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>From: <strong>{msg.from}</strong></div>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--color-text-primary)', marginTop: '0.5rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {msg.text?.substring(0, 150) || 'No text content'}...
                   </div>
                   {msg.isReplied && (
-                    <div style={{ display: 'inline-flex', padding: '0.2rem 0.6rem', background: '#dcfce7', color: '#166534', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 600, marginTop: '0.5rem', width: 'fit-content' }}>
+                    <div style={{ display: 'inline-flex', padding: '0.2rem 0.6rem', background: 'rgba(37, 211, 102, 0.1)', color: '#25D366', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 600, marginTop: '0.5rem', width: 'fit-content' }}>
                       ✓ AI Replied
                     </div>
                   )}

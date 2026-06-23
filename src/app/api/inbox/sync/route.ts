@@ -75,7 +75,8 @@ export async function POST(req: Request) {
         host: settings.imapHost,
         port: settings.imapPort,
         tls: true,
-        authTimeout: 10000
+        tlsOptions: { rejectUnauthorized: false },
+        authTimeout: 30000
       }
     };
 

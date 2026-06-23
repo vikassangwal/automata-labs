@@ -54,7 +54,7 @@ Body: [Your Body]`;
         if (subjMatch && subjMatch[1]) subject = subjMatch[1].trim();
         if (bodyMatch && bodyMatch[1]) bodyText = bodyMatch[1].trim();
 
-        await prisma.outreachMessage.create({
+        const messageDraft = await prisma.outreachMessage.create({
           data: {
             leadId: newLead.id,
             channel: 'email',
@@ -64,6 +64,42 @@ Body: [Your Body]`;
             aiGenerated: true
           }
         });
+
+        // Try to auto-send the email if SMTP is configured
+        try {
+          const settings = await prisma.emailSettings.findUnique({ where: { id: 'default' } });
+          if (settings && settings.emailUser && settings.appPassword) {
+            const nodemailer = require('nodemailer');
+            const transporter = nodemailer.createTransport({
+              host: settings.smtpHost,
+              port: settings.smtpPort,
+              secure: settings.smtpPort === 465,
+              auth: {
+                user: settings.emailUser,
+                pass: settings.appPassword,
+              },
+            });
+
+            await transporter.sendMail({
+              from: settings.emailUser,
+              to: body.email,
+              subject: subject,
+              text: bodyText,
+            });
+
+            await prisma.outreachMessage.update({
+              where: { id: messageDraft.id },
+              data: { status: 'sent' }
+            });
+            
+            await prisma.lead.update({
+              where: { id: newLead.id },
+              data: { status: 'Contacted' }
+            });
+          }
+        } catch (mailErr) {
+          console.error('Failed to auto-send email:', mailErr);
+        }
       }
     } catch (e) {
       console.error('Failed to auto-generate message:', e);

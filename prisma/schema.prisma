@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ==========================================
@@ -84,9 +85,10 @@ model SiteSettings {
   siteName      String  @default("Anti Gravity 2.0")
   siteTagline   String  @default("AI-Powered Blogging Platform")
   adminEmail    String  @default("admin@antigravity.com")
-  aiProvider    String  @default("openai")    // openai, gemini, anthropic
+  aiProvider    String  @default("openai")    // openai, gemini, anthropic, deepseek
   aiApiKey      String  @default("")
   aiModel       String  @default("gpt-4o-mini")
+  aiContext     String? @default("")
   seoTitle      String  @default("Anti Gravity 2.0 | AI-Powered Blog")
   seoDescription String @default("Advanced AI-Powered Blogging Platform")
   updatedAt     DateTime @updatedAt

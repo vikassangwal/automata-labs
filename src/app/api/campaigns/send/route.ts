@@ -39,17 +39,31 @@ export async function POST(req: Request) {
       where: { id: { in: leadIds } }
     });
 
+    const siteSettings = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
+    const aiContext = siteSettings?.aiContext ? `\nMy Biodata / Company Context:\n${siteSettings.aiContext}\n` : '';
+
     let sent = 0;
     let failed = 0;
 
     // Send emails sequentially to avoid rate limits
     for (const lead of leads) {
+      if (!lead.email || lead.email.trim() === '') {
+        failed++;
+        continue;
+      }
       try {
-        const prompt = `Write a short, professional, and highly persuasive email to ${lead.name}. They run a business but currently do NOT have a website. Explain the value of having a professional website (credibility, 24/7 lead generation, automation). Offer to build them a custom website. Keep it under 150 words. Do not use placeholders. Use my name: Automata Labs Team.`;
+        const leadName = lead.name && lead.name.trim() !== '' ? lead.name : 'Business Owner';
+        const leadCompany = lead.company && lead.company.trim() !== '' ? ` at ${lead.company}` : '';
         
-        const aiResponse = await generateWithAI(prompt);
+        const prompt = `Write a short, professional, and highly persuasive email to ${leadName}${leadCompany}. 
+They currently do NOT have a website. Explain the value of having a professional website (credibility, 24/7 lead generation, automation). Offer to build them a custom website. 
+Keep it under 150 words. Do not use placeholders.${aiContext}`;
+
+        const systemPrompt = `You are an expert sales copywriter. Use the provided company context to personalize the sender's details and pitch. DO NOT output any subject line. DO NOT use placeholders like [Name] or [Link]. If any data is missing, adapt the sentence to read naturally without placeholders. Return ONLY the email body ready to send.`;
+        
+        const aiResponse = await generateWithAI(prompt, systemPrompt);
         // Assuming aiResponse returns an object or string. We just use the string.
-        const body = typeof aiResponse === 'string' ? aiResponse : aiResponse.content || aiResponse;
+        const body = typeof aiResponse === 'string' ? aiResponse : (aiResponse as any).content || aiResponse;
 
         await transporter.sendMail({
           from: settings.emailUser,
