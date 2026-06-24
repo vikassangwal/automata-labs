@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { generateWithAI } from '@/lib/ai';
+import { generateWithDynamicAI } from '@/lib/ai';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
-    const { url } = await request.json();
+    const { url, auditModel } = await request.json();
 
     if (!url || !url.startsWith('http')) {
       return NextResponse.json({ error: 'Please provide a valid URL starting with http or https' }, { status: 400 });
@@ -43,7 +44,15 @@ Provide a highly professional, client-friendly audit report. Use clear markdown 
 
 Make it sound like a premium consulting report.`;
 
-    const aiReport = await generateWithAI(prompt);
+    const aiReport = await generateWithDynamicAI(auditModel, prompt);
+
+    // Save to Database
+    await prisma.websiteAnalysis.create({
+      data: {
+        url,
+        report: aiReport
+      }
+    });
 
     return NextResponse.json({ report: aiReport });
 

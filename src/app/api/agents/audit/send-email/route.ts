@@ -5,10 +5,10 @@ import { marked } from 'marked';
 
 export async function POST(request: Request) {
   try {
-    const { targetEmail, websiteUrl, report } = await request.json();
+    const { targetEmail, websiteUrl, emailDraft } = await request.json();
 
-    if (!targetEmail || !websiteUrl || !report) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    if (!targetEmail || !emailDraft) {
+      return NextResponse.json({ error: 'Missing target email or email draft' }, { status: 400 });
     }
 
     // Get SMTP credentials from Site Settings
@@ -25,27 +25,23 @@ export async function POST(request: Request) {
       },
     });
 
-    // Convert markdown report to HTML
-    const reportHtml = await marked.parse(report);
+    // Convert any markdown in the draft to HTML
+    const emailHtml = await marked.parse(emailDraft);
 
     const mailOptions = {
       from: `"${settings.siteName}" <${settings.emailUser}>`,
       to: targetEmail,
-      subject: `Free Website Audit Report: ${websiteUrl}`,
+      subject: websiteUrl ? `Quick thoughts on ${websiteUrl}` : `Quick question regarding your website`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; color: #333;">
-          <h2 style="color: #0066cc;">Website Audit Report for ${websiteUrl}</h2>
-          <p>Hi there,</p>
-          <p>Our AI Agent recently analyzed your website, and we found several critical areas that could be improved to increase your traffic and conversions. Here is the detailed report:</p>
+        <div style="font-family: Arial, sans-serif; font-size: 15px; max-width: 600px; margin: 0 auto; color: #222;">
+          ${emailHtml}
+          <br/>
           <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
-          
-          <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; font-size: 14px; line-height: 1.6;">
-            ${reportHtml}
-          </div>
-
-          <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
-          <p>If you'd like our help fixing these issues and upgrading your online presence, just reply to this email!</p>
-          <p>Best regards,<br/><strong>The ${settings.siteName} Team</strong></p>
+          <p style="color: #666; font-size: 13px;">
+            Best regards,<br/>
+            <strong>The ${settings.siteName} Team</strong><br/>
+            <a href="https://automata-labs.vercel.app" style="color: #8b5cf6;">automata-labs.vercel.app</a>
+          </p>
         </div>
       `,
     };

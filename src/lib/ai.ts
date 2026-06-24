@@ -172,3 +172,70 @@ export async function generateWithAI(prompt: string, customSystemPrompt?: string
   const systemPrompt = customSystemPrompt || 'You are an expert copywriter and assistant.';
   return generateAIContent(config, systemPrompt, prompt);
 }
+
+/**
+ * Generate AI content with a dynamically selected provider and model
+ * dynamicIdentifier format: "provider:model" e.g., "openai:gpt-4o" or "deepseek:deepseek-chat"
+ */
+export async function generateWithDynamicAI(
+  dynamicIdentifier: string, 
+  prompt: string, 
+  customSystemPrompt?: string
+): Promise<string> {
+  if (!dynamicIdentifier) {
+    return generateWithAI(prompt, customSystemPrompt); // fallback to default
+  }
+
+  const [provider, ...modelParts] = dynamicIdentifier.split(':');
+  const model = modelParts.join(':');
+
+  let apiKey = '';
+
+  // Fetch the specific API key for this provider
+  if (provider === 'deepseek' || provider === 'openrouter') {
+    // Usually stored in SiteSettings or ApiKey
+    const settings = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
+    apiKey = settings?.aiApiKey || '';
+    if (provider === 'openrouter' && !apiKey.startsWith('sk-or-')) {
+      // Look in ApiKey table
+      const keyRecord = await prisma.apiKey.findFirst({ where: { provider: 'openrouter', isActive: true } });
+      if (keyRecord) apiKey = keyRecord.apiKey;
+    }
+  } else {
+    // OpenAI, Anthropic, Gemini usually in ApiKey table
+    const providerMap: Record<string, string> = {
+      'openai': 'openai',
+      'gemini': 'google_ai',
+      'anthropic': 'anthropic'
+    };
+    const mappedProvider = providerMap[provider] || provider;
+    
+    const keyRecord = await prisma.apiKey.findFirst({ 
+      where: { provider: mappedProvider, isActive: true },
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    if (keyRecord) {
+      apiKey = keyRecord.apiKey;
+    } else {
+      // fallback to site settings
+      const settings = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
+      if (settings?.aiProvider === provider) {
+        apiKey = settings.aiApiKey;
+      }
+    }
+  }
+
+  if (!apiKey) {
+    throw new Error(`API Key for ${provider} is missing. Please add it in Admin Settings.`);
+  }
+
+  const config: AIConfig = {
+    provider: (provider === 'openrouter' ? 'deepseek' : provider) as AIProvider, // route openrouter through deepseek handler
+    apiKey,
+    model
+  };
+
+  const systemPrompt = customSystemPrompt || 'You are an expert copywriter and assistant.';
+  return generateAIContent(config, systemPrompt, prompt);
+}
