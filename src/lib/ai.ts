@@ -79,8 +79,8 @@ export async function generateAIContent(
         max_tokens: maxTokens
       })
     });
-    if (!res.ok) throw new Error(`OpenAI API error: ${res.status}`);
     const data = await res.json();
+    if (!res.ok) throw new Error(`OpenAI API error: ${data.error?.message || res.status}`);
     return data.choices?.[0]?.message?.content || '';
   }
   
@@ -98,8 +98,8 @@ export async function generateAIContent(
         })
       }
     );
-    if (!res.ok) throw new Error(`Gemini API error: ${res.status}`);
     const data = await res.json();
+    if (!res.ok) throw new Error(`Gemini API error: ${data.error?.message || res.status}`);
     return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
   }
   
@@ -118,20 +118,34 @@ export async function generateAIContent(
         messages: [{ role: 'user', content: userPrompt }]
       })
     });
-    if (!res.ok) throw new Error(`Anthropic API error: ${res.status}`);
     const data = await res.json();
+    if (!res.ok) throw new Error(`Anthropic API error: ${data.error?.message || res.status}`);
     return data.content?.[0]?.text || '';
   }
   
   if (config.provider === 'deepseek') {
-    const res = await fetch('https://api.deepseek.com/chat/completions', {
+    // Check if the user mistakenly put an OpenRouter key in the DeepSeek field
+    const isOpenRouterKey = config.apiKey.startsWith('sk-or-');
+    const endpoint = isOpenRouterKey 
+      ? 'https://openrouter.ai/api/v1/chat/completions' 
+      : 'https://api.deepseek.com/chat/completions';
+      
+    const modelToUse = isOpenRouterKey 
+      ? (config.model.includes('/') ? config.model : `deepseek/${config.model}`)
+      : (config.model || 'deepseek-chat');
+
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${config.apiKey}`
+        'Authorization': `Bearer ${config.apiKey}`,
+        ...(isOpenRouterKey && {
+          'HTTP-Referer': 'https://automata-labs.vercel.app',
+          'X-Title': 'Automata Labs'
+        })
       },
       body: JSON.stringify({
-        model: config.model || 'deepseek-chat',
+        model: modelToUse,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
@@ -140,8 +154,8 @@ export async function generateAIContent(
         max_tokens: maxTokens
       })
     });
-    if (!res.ok) throw new Error(`DeepSeek API error: ${res.status}`);
     const data = await res.json();
+    if (!res.ok) throw new Error(`DeepSeek API error: ${data.error?.message || JSON.stringify(data)}`);
     return data.choices?.[0]?.message?.content || '';
   }
   
