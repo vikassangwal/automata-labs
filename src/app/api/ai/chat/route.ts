@@ -66,7 +66,7 @@ Rules:
     // 4. Intelligent Fallback (if no AI key or API fails)
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate typing
     
-    let fallbackReply = "I am currently operating in demo mode. Please add an AI API key (OpenAI/Gemini/Claude) in the Admin Settings to unlock my full conversational abilities!";
+    let fallbackReply = "I am currently operating in demo mode. Please check your API keys or credits in the Admin Settings.";
     
     const lowerMsg = message.toLowerCase();
     if (lowerMsg.includes('hi') || lowerMsg.includes('hello')) {
