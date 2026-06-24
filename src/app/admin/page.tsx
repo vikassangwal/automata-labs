@@ -4,23 +4,16 @@ import Link from 'next/link';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
-  const [recentPosts, setRecentPosts] = useState<any[]>([]);
   const [recentLeads, setRecentLeads] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/blog?limit=5').then(r => r.json()),
-      fetch('/api/leads?limit=5').then(r => r.json()),
-      fetch('/api/auto-blog').then(r => r.json())
-    ]).then(([blogData, leadsData, autoBlogData]) => {
+      fetch('/api/leads?limit=5').then(r => r.json())
+    ]).then(([leadsData]) => {
       setStats({
-        totalPosts: blogData.total || 0,
         totalLeads: leadsData.total || 0,
-        autoBlogActive: autoBlogData.stats?.totalAutoPosts !== undefined, // simple check
-        totalAutoPosts: autoBlogData.stats?.totalAutoPosts || 0
       });
-      setRecentPosts(blogData.posts || []);
       setRecentLeads(leadsData.leads || []);
       setIsLoading(false);
     }).catch(() => setIsLoading(false));
@@ -65,55 +58,31 @@ export default function AdminDashboard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div>
           <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 0.5rem 0', color: '#111827' }}>Dashboard</h1>
-          <p style={{ color: '#6b7280', margin: 0 }}>Welcome back to Anti Gravity 2.0</p>
+          <p style={{ color: '#6b7280', margin: 0 }}>Welcome to Automata Labs Command Center</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <Link href="/admin/blog/new" className="btn-primary" style={{ textDecoration: 'none' }}>
-            + New Post
+          <Link href="/admin/agents" className="btn-primary" style={{ textDecoration: 'none', background: '#8b5cf6', borderColor: '#8b5cf6' }}>
+            🕵️‍♂️ Open AI Auditor
           </Link>
-          <Link href="/admin/auto-blog" className="btn-secondary" style={{ textDecoration: 'none' }}>
-            🤖 AI Settings
+          <Link href="/admin/inbox" className="btn-secondary" style={{ textDecoration: 'none' }}>
+            📥 View Inbox
           </Link>
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
-        <StatCard title="Total Posts" value={stats?.totalPosts} icon="📝" color="#eff6ff" />
-        <StatCard title="AI Generated Posts" value={stats?.totalAutoPosts} icon="✨" color="#f5f3ff" />
         <StatCard title="Total Leads" value={stats?.totalLeads} icon="🎯" color="#ecfdf5" />
-        <StatCard title="Auto-Blog Status" value={stats?.autoBlogActive ? 'Active' : 'Paused'} icon="🤖" color={stats?.autoBlogActive ? '#dcfce7' : '#fee2e2'} />
+        <StatCard title="Active Campaigns" value="1" icon="🚀" color="#eff6ff" />
+        <StatCard title="AI Models Ready" value="4" icon="🤖" color="#f5f3ff" />
+        <StatCard title="API Health" value="Online" icon="⚡" color="#ecfdf5" />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem' }}>
-        {/* Recent Posts */}
-        <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #e5e7eb', padding: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>Recent Posts</h2>
-            <Link href="/admin/blog" style={{ color: '#0066cc', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500 }}>View All</Link>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {recentPosts.map(post => (
-              <div key={post.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid #f3f4f6' }}>
-                <div>
-                  <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem', fontWeight: 600 }}>{post.title}</h4>
-                  <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                    {post.status} • {new Date(post.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <Link href={`/admin/blog/edit?slug=${post.slug}`} style={{ padding: '0.4rem 0.8rem', background: '#f3f4f6', borderRadius: '6px', color: '#374151', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 500 }}>
-                  Edit
-                </Link>
-              </div>
-            ))}
-            {recentPosts.length === 0 && <p style={{ color: '#6b7280', textAlign: 'center', padding: '2rem 0' }}>No posts yet.</p>}
-          </div>
-        </div>
-
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
         {/* Recent Leads */}
         <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #e5e7eb', padding: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0 }}>Recent Leads</h2>
-            <Link href="/admin/leads" style={{ color: '#0066cc', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500 }}>View All</Link>
+            <Link href="/admin/crm" style={{ color: '#0066cc', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500 }}>View CRM →</Link>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {recentLeads.map(lead => (
@@ -127,7 +96,7 @@ export default function AdminDashboard() {
                 </span>
               </div>
             ))}
-            {recentLeads.length === 0 && <p style={{ color: '#6b7280', textAlign: 'center', padding: '2rem 0' }}>No leads yet.</p>}
+            {recentLeads.length === 0 && <p style={{ color: '#6b7280', textAlign: 'center', padding: '2rem 0' }}>No leads yet. Start auditing websites to generate some!</p>}
           </div>
         </div>
       </div>

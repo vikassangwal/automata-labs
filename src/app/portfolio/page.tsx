@@ -11,7 +11,7 @@ export default async function PortfolioPage() {
     { id: '4', title: 'VK Fort', category: 'Corporate & Security', websiteLink: 'https://vkfort.vercel.app/', imageUrl: 'https://image.thum.io/get/width/800/crop/600/https://vkfort.vercel.app/' }
   ];
 
-  let dbProjects = [];
+  let dbProjects: any[] = [];
   try {
     dbProjects = await prisma.portfolio.findMany({
       orderBy: { createdAt: 'desc' }

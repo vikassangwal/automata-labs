@@ -35,7 +35,6 @@ export default function Footer({ siteName = "Automata Labs." }: { siteName?: str
             <h4 style={{ color: 'var(--color-text-white)', marginBottom: '0.5rem' }}>Company</h4>
             <Link href="#about" className="text-gray" style={{ fontSize: '0.9rem', transition: 'color 0.3s' }}>About Us</Link>
             <Link href="#careers" className="text-gray" style={{ fontSize: '0.9rem', transition: 'color 0.3s' }}>Careers</Link>
-            <Link href="#blog" className="text-gray" style={{ fontSize: '0.9rem', transition: 'color 0.3s' }}>Blog</Link>
             <Link href="#contact" className="text-gray" style={{ fontSize: '0.9rem', transition: 'color 0.3s' }}>Contact</Link>
           </div>
 

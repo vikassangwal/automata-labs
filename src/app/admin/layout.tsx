@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 
 const sidebarItems = [
   { name: 'Dashboard', path: '/admin', icon: '📊' },
-  { name: 'Blog Management', path: '/admin/blog', icon: '📝' },
   { name: 'CRM & Lead Management', path: '/admin/crm', icon: '💼' },
   { name: 'AI Email Hub', path: '/admin/inbox', icon: '📥' },
   { name: 'Website Campaigns', path: '/admin/campaigns', icon: '🚀' },

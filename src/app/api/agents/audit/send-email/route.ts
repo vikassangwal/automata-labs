@@ -11,17 +11,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing target email or email draft' }, { status: 400 });
     }
 
-    // Get SMTP credentials from Site Settings
+    // Get site name and email credentials
     const settings = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
-    if (!settings || !settings.emailUser || !settings.emailPassword) {
+    const emailSettings = await prisma.emailSettings.findUnique({ where: { id: 'default' } });
+    
+    if (!emailSettings || !emailSettings.emailUser || !emailSettings.appPassword) {
       return NextResponse.json({ error: 'Admin email settings not configured. Please go to Settings and add your Gmail and App Password.' }, { status: 500 });
     }
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: settings.emailUser,
-        pass: settings.emailPassword,
+        user: emailSettings.emailUser,
+        pass: emailSettings.appPassword,
       },
     });
 
@@ -29,7 +31,7 @@ export async function POST(request: Request) {
     const emailHtml = await marked.parse(emailDraft);
 
     const mailOptions = {
-      from: `"${settings.siteName}" <${settings.emailUser}>`,
+      from: `"${settings?.siteName || 'Automata Labs'}" <${emailSettings.emailUser}>`,
       to: targetEmail,
       subject: websiteUrl ? `Quick thoughts on ${websiteUrl}` : `Quick question regarding your website`,
       html: `
@@ -39,7 +41,7 @@ export async function POST(request: Request) {
           <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
           <p style="color: #666; font-size: 13px;">
             Best regards,<br/>
-            <strong>The ${settings.siteName} Team</strong><br/>
+            <strong>The ${settings?.siteName || 'Automata Labs'} Team</strong><br/>
             <a href="https://automata-labs.vercel.app" style="color: #8b5cf6;">automata-labs.vercel.app</a>
           </p>
         </div>

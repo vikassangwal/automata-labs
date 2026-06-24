@@ -25,7 +25,6 @@ export async function GET(request: Request) {
     const [leads, total] = await Promise.all([
       prisma.lead.findMany({
         where,
-        include: { post: { select: { title: true } } },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
@@ -47,7 +46,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, source, postId } = body;
+    const { name, email, phone, source } = body;
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -58,8 +57,7 @@ export async function POST(request: Request) {
         name: name || 'Anonymous',
         email,
         phone,
-        source: source || 'unknown',
-        postId: postId || null
+        source: source || 'unknown'
       }
     });
 
