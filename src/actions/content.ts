@@ -32,7 +32,7 @@ export async function saveHeroContent(data: {
       data,
     });
   }
-  revalidateTag("content");
+  revalidateTag("content", "default");
   revalidatePath("/");
 }
 
@@ -72,13 +72,13 @@ export async function saveService(data: {
       },
     });
   }
-  revalidateTag("content");
+  revalidateTag("content", "default");
   revalidatePath("/");
 }
 
 export async function deleteService(id: string) {
   await prisma.service.delete({ where: { id } });
-  revalidateTag("content");
+  revalidateTag("content", "default");
   revalidatePath("/");
 }
 
@@ -124,13 +124,13 @@ export async function savePortfolioProject(data: {
       },
     });
   }
-  revalidateTag("content");
+  revalidateTag("content", "default");
   revalidatePath("/");
 }
 
 export async function deletePortfolioProject(id: string) {
   await prisma.portfolioProject.delete({ where: { id } });
-  revalidateTag("content");
+  revalidateTag("content", "default");
   revalidatePath("/");
 }
 
