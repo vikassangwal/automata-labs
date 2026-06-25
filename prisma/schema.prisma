@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          String    @default("user")
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==============================
+// Content Management System Models
+// ==============================
+
+model HeroContent {
+  id          String   @id @default(cuid())
+  badgeText   String   @default("Automata Framework v2.0 Live")
+  headline    String   @default("Engineering the Autonomous Enterprise.")
+  description String   @default("We build sophisticated AI agents, high-performance web applications, and autonomous workflows that scale your business.")
+  button1Text String   @default("Get Started")
+  button1Link String   @default("/login")
+  button2Text String   @default("View Dashboard")
+  button2Link String   @default("/admin")
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  iconSvg     String   // We can store a Lucide icon name or raw SVG here
+  order       Int      @default(0)
+}
+
+model PortfolioProject {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  imagePath   String
+  gridClass   String   @default("portfolio-item-small") // Allows controlling bento box size
+  link        String?
+  order       Int      @default(0)
+}
+
+model AgentFeature {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  order       Int      @default(0)
+}

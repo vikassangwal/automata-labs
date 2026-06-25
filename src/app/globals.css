@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-outfit: var(--font-outfit);
+}
+
+:root {
+  --color-bg-base: #000000;
+  --color-bg-card: #050505;
+  --color-bg-hover: #0a0a0a;
+  --color-border: #1a1a1a;
+  --color-border-hover: #333333;
+  --color-accent: #10b981; /* Emerald Green */
+  --color-accent-glow: rgba(16, 185, 129, 0.2);
+  --color-text-main: #ededed;
+  --color-text-muted: #888888;
+  --max-width: 1280px;
+  --spacing-section: 6rem;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.text-muted { color: var(--color-text-muted); }
+
+/* The Dot Grid Background */
+.bg-dot-grid {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background-image: radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0);
+  background-size: 32px 32px;
+  z-index: -1; pointer-events: none;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+}
+
+.stealth-nav {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  position: fixed; top: 0; width: 100%; z-index: 100; padding: 1rem 0;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--color-text-main);
+  color: var(--color-bg-base);
+  padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 500; border: none; cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.9rem;
+}
+
+.btn-primary:hover {
+  background: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--color-text-main);
+  padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 500;
+  border: 1px solid var(--color-border); cursor: pointer; transition: all 0.2s ease;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+  background: var(--color-bg-hover);
+  border-color: var(--color-border-hover);
+}
+
+.stealth-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stealth-card:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-bg-hover);
+}
+
+.stealth-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stealth-card:hover::before {
+  opacity: 1;
+}
+
+.container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+.section { padding: var(--spacing-section) 0; }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+.portfolio-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  transition: border-color 0.3s ease;
+}
+
+.portfolio-item:hover {
+  border-color: var(--color-border-hover);
+}
+
+.portfolio-item-large { grid-column: span 8; height: 400px; }
+.portfolio-item-small { grid-column: span 4; height: 400px; }
+.portfolio-item-wide { grid-column: span 12; height: 400px; }
+
+@media (max-width: 900px) {
+  .portfolio-item-large, .portfolio-item-small { grid-column: span 12; }
+}
+
+.portfolio-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s ease;
+  opacity: 0.8;
+  filter: grayscale(20%);
+}
+
+.portfolio-item:hover .portfolio-image {
+  transform: scale(1.02);
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+.portfolio-overlay {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+}
+
+.code-block {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: #0a0a0a;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  overflow: hidden;
+}
