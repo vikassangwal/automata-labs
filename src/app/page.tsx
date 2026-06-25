@@ -23,7 +23,6 @@ export default async function Home() {
             <Link href="#services" className="text-muted" style={{ transition: 'color 0.2s', fontSize: '0.9rem', fontWeight: 500 }}>Services</Link>
             <Link href="#portfolio" className="text-muted" style={{ transition: 'color 0.2s', fontSize: '0.9rem', fontWeight: 500 }}>Work</Link>
             <Link href="#agents" className="text-muted" style={{ transition: 'color 0.2s', fontSize: '0.9rem', fontWeight: 500 }}>Agents</Link>
-            <Link href="/login" className="text-muted" style={{ transition: 'color 0.2s', fontSize: '0.9rem', fontWeight: 500 }}>Login</Link>
             <Link href="#contact" className="btn-primary">Book Consultation</Link>
           </div>
         </div>
@@ -169,7 +168,6 @@ export default async function Home() {
             <Link href="#services" className="text-muted" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>Services</Link>
             <Link href="#portfolio" className="text-muted" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>Work</Link>
             <Link href="#agents" className="text-muted" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>Agents</Link>
-            <Link href="/login" className="text-muted" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>Client Portal</Link>
           </div>
         </div>
       </footer>
