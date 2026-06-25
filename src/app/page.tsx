@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getHeroContent, getServices, getPortfolioProjects, seedContentIfEmpty } from "@/actions/content";
+import AgentVisualizer from '@/components/AgentVisualizer';
 
 export default async function Home() {
   const hero = await getHeroContent();
@@ -146,40 +147,8 @@ export default async function Home() {
             <button className="btn-primary">Explore Architecture</button>
           </div>
           
-          <div style={{ position: 'relative', height: '500px', width: '100%' }}>
-            {/* Minimalist Node Graph Graphic */}
-            <div className="stealth-card" style={{ position: 'absolute', top: '10%', right: '10%', width: '220px', zIndex: 2 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Node ID: 89A</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-accent)' }}>Active</span>
-              </div>
-              <div style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>Data Aggregator</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Processing stream...</div>
-            </div>
-            
-            <div className="stealth-card" style={{ position: 'absolute', bottom: '20%', left: '5%', width: '220px', zIndex: 2 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Node ID: 42B</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-accent)' }}>Active</span>
-              </div>
-              <div style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>Logic Engine</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Executing sequence...</div>
-            </div>
-
-            <div className="stealth-card" style={{ position: 'absolute', top: '40%', left: '30%', width: '220px', zIndex: 2 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Node ID: 01X</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-accent)' }}>Active</span>
-              </div>
-              <div style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>Supervisor Agent</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Routing requests...</div>
-            </div>
-
-            {/* Connecting lines */}
-            <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }} stroke="var(--color-border)" strokeWidth="1" fill="none">
-              <path d="M 100 350 L 200 250" strokeDasharray="4 4" />
-              <path d="M 250 200 L 350 100" strokeDasharray="4 4" />
-            </svg>
+          <div style={{ position: 'relative', width: '100%' }}>
+            <AgentVisualizer />
           </div>
         </div>
       </section>
