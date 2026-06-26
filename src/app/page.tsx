@@ -135,6 +135,36 @@ export default async function Home() {
         </div>
       </section>
 
+      <section id="contact" className="section" style={{ borderTop: '1px solid var(--color-border)', background: 'var(--color-bg-card)' }}>
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Book a Consultation</h2>
+            <p className="text-muted" style={{ fontSize: '1.1rem' }}>Get in touch with our team to discuss how we can engineer your autonomous enterprise.</p>
+          </div>
+          <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <label htmlFor="name" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Full Name</label>
+                <input type="text" id="name" placeholder="John Doe" style={{ padding: '0.8rem 1rem', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '0.95rem', outline: 'none' }} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <label htmlFor="email" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Email Address</label>
+                <input type="email" id="email" placeholder="john@company.com" style={{ padding: '0.8rem 1rem', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '0.95rem', outline: 'none' }} />
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label htmlFor="company" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Company (Optional)</label>
+              <input type="text" id="company" placeholder="Company Name" style={{ padding: '0.8rem 1rem', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '0.95rem', outline: 'none' }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label htmlFor="message" style={{ fontSize: '0.9rem', fontWeight: 500 }}>Message</label>
+              <textarea id="message" rows={5} placeholder="How can we help you?" style={{ padding: '0.8rem 1rem', borderRadius: '6px', border: '1px solid var(--color-border)', background: 'var(--color-bg-base)', color: 'var(--color-text-main)', fontSize: '0.95rem', outline: 'none', resize: 'vertical' }}></textarea>
+            </div>
+            <button type="button" className="btn-primary" style={{ padding: '1rem', marginTop: '1rem', fontSize: '1rem' }}>Submit Request</button>
+          </form>
+        </div>
+      </section>
+
       <footer style={{ borderTop: '1px solid var(--color-border)', padding: '4rem 0', background: 'var(--color-bg-base)' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '2rem' }}>
           <div>
