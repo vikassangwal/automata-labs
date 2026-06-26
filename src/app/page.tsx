@@ -16,7 +16,7 @@ export default async function Home() {
                <div style={{ width: '12px', height: '12px', background: 'var(--color-bg-base)', borderRadius: '2px' }}></div>
             </div>
             <span style={{ fontWeight: 600, fontSize: '1.1rem', letterSpacing: '-0.02em', color: 'var(--color-text-main)' }}>
-              Automata Labs
+              Your Brand Name
             </span>
           </Link>
           <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
@@ -46,25 +46,7 @@ export default async function Home() {
             <Link href={hero?.button2Link || "/admin"} className="btn-secondary" style={{ padding: '0.8rem 1.8rem', fontSize: '1rem' }}>{hero?.button2Text}</Link>
           </div>
 
-          <div style={{ marginTop: '5rem', display: 'flex', justifyContent: 'center' }}>
-             <div className="code-block" style={{ width: '100%', maxWidth: '700px', textAlign: 'left' }}>
-               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem' }}>
-                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }}></div>
-                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }}></div>
-                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }}></div>
-               </div>
-               <code>
-                 <span style={{ color: '#c678dd' }}>import</span> {'{'} Automata {'}'} <span style={{ color: '#c678dd' }}>from</span> <span style={{ color: '#98c379' }}>'@automata/core'</span>;<br/><br/>
-                 <span style={{ color: '#e5c07b' }}>const</span> system = <span style={{ color: '#c678dd' }}>new</span> Automata();<br/><br/>
-                 system.<span style={{ color: '#61afef' }}>deploy</span>({'{'}<br/>
-                 &nbsp;&nbsp;agents: [<span style={{ color: '#98c379' }}>'sales'</span>, <span style={{ color: '#98c379' }}>'support'</span>, <span style={{ color: '#98c379' }}>'analytics'</span>],<br/>
-                 &nbsp;&nbsp;scale: <span style={{ color: '#d19a66' }}>'infinite'</span>,<br/>
-                 &nbsp;&nbsp;performance: <span style={{ color: '#d19a66' }}>'maximum'</span><br/>
-                 {'}'});<br/><br/>
-                 <span style={{ color: '#5c6370', fontStyle: 'italic' }}>// System initialized in 0.04s</span>
-               </code>
-             </div>
-          </div>
+
         </div>
       </section>
 
@@ -120,9 +102,9 @@ export default async function Home() {
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
               Agentic Framework
             </div>
-            <h2 style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>Intelligence, Distributed.</h2>
+            <h2 style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>Your Custom Title</h2>
             <p className="text-muted" style={{ fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.8' }}>
-              We design specialized node-based architectures where multiple AI agents collaborate to solve complex problems. This isn't just a wrapper—it's a fundamental shift in how software operates.
+              Your section description goes here. This text is hardcoded in the code and can be updated to match your actual services.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
@@ -130,8 +112,8 @@ export default async function Home() {
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-accent)' }}></div>
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>Deterministic Outputs</h4>
-                  <p className="text-muted" style={{ fontSize: '0.9rem' }}>Rigorous testing ensures agents perform reliably in enterprise environments.</p>
+                  <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>Feature 1</h4>
+                  <p className="text-muted" style={{ fontSize: '0.9rem' }}>Feature description goes here.</p>
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
@@ -139,8 +121,8 @@ export default async function Home() {
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-text-main)' }}></div>
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>System Integration</h4>
-                  <p className="text-muted" style={{ fontSize: '0.9rem' }}>Agents securely interface with your database, APIs, and external tools.</p>
+                  <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>Feature 2</h4>
+                  <p className="text-muted" style={{ fontSize: '0.9rem' }}>Feature description goes here.</p>
                 </div>
               </div>
             </div>
@@ -159,10 +141,10 @@ export default async function Home() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
               <div style={{ width: '16px', height: '16px', background: 'var(--color-text-main)', borderRadius: '2px' }}></div>
               <span style={{ fontWeight: 600, fontSize: '1rem', letterSpacing: '-0.02em', color: 'var(--color-text-main)' }}>
-                Automata Labs
+                Your Brand Name
               </span>
             </div>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>© 2026 Automata Labs Inc. All rights reserved.</p>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>© 2026 Your Brand Name. All rights reserved.</p>
           </div>
           <div style={{ display: 'flex', gap: '2rem' }}>
             <Link href="#services" className="text-muted" style={{ fontSize: '0.85rem', transition: 'color 0.2s' }}>Services</Link>
