@@ -174,19 +174,19 @@ export default async function Home({ params }: { params: { lang: Locale } }) {
             <p className="text-muted" style={{ fontSize: '1rem' }}>{dict.contact.subtitle}</p>
           </div>
 
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#fff', padding: '2rem', borderRadius: '16px', border: '1px solid #f0f0f0', boxShadow: '0 2px 10px rgba(0,0,0,0.04)' }}>
-            <input type="text" className="form-input" placeholder={dict.contact.namePlaceholder} />
-            <input type="email" className="form-input" placeholder={dict.contact.emailPlaceholder} />
-            <input type="tel" className="form-input" placeholder={dict.contact.phonePlaceholder} />
-            <select className="form-input" style={{ color: '#aaa' }}>
+          <form action="mailto:hello@antigravity.com" method="post" encType="text/plain" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#fff', padding: '2rem', borderRadius: '16px', border: '1px solid #f0f0f0', boxShadow: '0 2px 10px rgba(0,0,0,0.04)' }}>
+            <input type="text" name="Name" className="form-input" placeholder={dict.contact.namePlaceholder} />
+            <input type="email" name="Email" className="form-input" placeholder={dict.contact.emailPlaceholder} />
+            <input type="tel" name="Phone" className="form-input" placeholder={dict.contact.phonePlaceholder} />
+            <select name="Service" className="form-input" style={{ color: '#aaa' }}>
               <option value="">{dict.contact.serviceSelect}</option>
-              <option value="website">{dict.contact.serviceOpt1}</option>
-              <option value="chatbot">{dict.contact.serviceOpt2}</option>
-              <option value="automation">{dict.contact.serviceOpt3}</option>
-              <option value="other">{dict.contact.serviceOpt4}</option>
+              <option value="Website">{dict.contact.serviceOpt1}</option>
+              <option value="Chatbot">{dict.contact.serviceOpt2}</option>
+              <option value="Automation">{dict.contact.serviceOpt3}</option>
+              <option value="Other">{dict.contact.serviceOpt4}</option>
             </select>
-            <textarea className="form-input" rows={3} placeholder={dict.contact.messagePlaceholder} style={{ resize: 'vertical' }}></textarea>
-            <button type="button" className="btn btn-blue" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', marginTop: '0.5rem' }}>
+            <textarea name="Message" className="form-input" rows={3} placeholder={dict.contact.messagePlaceholder} style={{ resize: 'vertical' }}></textarea>
+            <button type="submit" className="btn btn-blue" style={{ width: '100%', padding: '0.9rem', fontSize: '1rem', marginTop: '0.5rem' }}>
               {dict.contact.submitBtn}
             </button>
             <p className="text-muted" style={{ fontSize: '0.8rem', textAlign: 'center' }}>{dict.contact.footerNote}</p>
