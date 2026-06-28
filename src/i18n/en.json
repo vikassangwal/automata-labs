@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "brand": "⚡ Anti Gravity 2.0",
+    "services": "Services",
+    "work": "Work",
+    "bookConsultation": "Book Consultation →"
+  },
+  "hero": {
+    "badge": "🚀 AI Automation Agency",
+    "headline": "We Build Websites, AI Agents & Automation Systems",
+    "description": "Use modern technology to grow your business. We build websites, AI chatbots, and automation systems.",
+    "cta1": "Book Free Consultation",
+    "cta2": "View Our Services",
+    "trust1": "Projects Done",
+    "trust2": "AI Support",
+    "trust3": "Client Satisfaction"
+  },
+  "services": {
+    "title": "What We Do",
+    "subtitle": "Services we provide to our clients",
+    "default1Title": "Website Development",
+    "default1Desc": "Modern, fast websites that work perfectly on mobile and attract customers.",
+    "default2Title": "AI Chatbot & Agents",
+    "default2Desc": "AI chatbots that talk to your customers 24/7 and automatically generate leads.",
+    "default3Title": "Business Automation",
+    "default3Desc": "Automate repetitive tasks — emails, invoices, follow-ups all automatic."
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Start in just 3 simple steps",
+    "step1Title": "Talk to Us",
+    "step1Desc": "Fill the form or call us, we will listen to your needs.",
+    "step2Title": "Plan",
+    "step2Desc": "We will create a custom plan for you.",
+    "step3Title": "Launch",
+    "step3Desc": "We will build and make your project live."
+  },
+  "portfolio": {
+    "title": "Our Projects",
+    "subtitle": "Here are some projects we have built for our clients",
+    "emptyTitle": "No projects added yet",
+    "emptySubtitle": "Add projects from the admin panel"
+  },
+  "contact": {
+    "title": "Book a Free Consultation",
+    "subtitle": "Fill the form below, we will contact you within 24 hours.",
+    "namePlaceholder": "Your Name",
+    "emailPlaceholder": "Email Address",
+    "phonePlaceholder": "Phone Number",
+    "serviceSelect": "What Service Do You Need?",
+    "serviceOpt1": "Website Development",
+    "serviceOpt2": "AI Chatbot",
+    "serviceOpt3": "Business Automation",
+    "serviceOpt4": "Other",
+    "messagePlaceholder": "Tell us about your project...",
+    "submitBtn": "✉️ Send Message",
+    "footerNote": "Completely free. No hidden charges."
+  },
+  "footer": {
+    "copyright": "© 2026 Anti Gravity 2.0"
+  },
+  "chatbot": {
+    "title": "Chat Support",
+    "greeting": "Hello! 🙏 How can I help you today?",
+    "placeholder": "Type here...",
+    "reply": "Thank you! 🙌 Our team will contact you soon. You can also fill the form below."
+  }
+}

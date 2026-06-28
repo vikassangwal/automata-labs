@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "brand": "⚡ Anti Gravity 2.0",
+    "services": "Services",
+    "work": "Work",
+    "bookConsultation": "Book Consultation →"
+  },
+  "hero": {
+    "badge": "🚀 AI Automation Agency",
+    "headline": "We Build Websites, AI Agents & Automation Systems",
+    "description": "Apne business ko grow karne ke liye modern technology ka use karein. Hum websites, AI chatbots aur automation systems banate hain.",
+    "cta1": "Free Consultation Book Karein",
+    "cta2": "Humari Services Dekhein",
+    "trust1": "Projects Done",
+    "trust2": "AI Support",
+    "trust3": "Client Satisfaction"
+  },
+  "services": {
+    "title": "Hum Kya Karte Hain?",
+    "subtitle": "Yeh services hum apne clients ko provide karte hain",
+    "default1Title": "Website Development",
+    "default1Desc": "Modern, fast websites jo mobile par bhi perfectly kaam karein aur customers ko attract karein.",
+    "default2Title": "AI Chatbot & Agents",
+    "default2Desc": "AI chatbot jo 24/7 aapke customers se baat kare aur automatically leads generate kare.",
+    "default3Title": "Business Automation",
+    "default3Desc": "Repetitive kaam ko automate karein — emails, invoices, follow-ups sab automatic."
+  },
+  "howItWorks": {
+    "title": "Kaise Kaam Hota Hai?",
+    "subtitle": "Sirf 3 simple steps mein shuru karein",
+    "step1Title": "Baat Karein",
+    "step1Desc": "Form bharein ya call karein, hum sunenge aapki zarurat.",
+    "step2Title": "Plan Banayein",
+    "step2Desc": "Hum aapke liye ek custom plan tayaar karenge.",
+    "step3Title": "Launch Karein",
+    "step3Desc": "Hum build karenge aur aapka project live kar denge."
+  },
+  "portfolio": {
+    "title": "Humare Projects",
+    "subtitle": "Yeh kuch projects hain jo humne apne clients ke liye banaye hain",
+    "emptyTitle": "Abhi koi project add nahi hua hai",
+    "emptySubtitle": "Admin panel mein jaakar projects add karein"
+  },
+  "contact": {
+    "title": "Free Consultation Book Karein",
+    "subtitle": "Neeche form bharein, hum 24 ghante ke andar aapko contact karenge.",
+    "namePlaceholder": "Aapka Naam",
+    "emailPlaceholder": "Email Address",
+    "phonePlaceholder": "Phone Number",
+    "serviceSelect": "Kya Service Chahiye?",
+    "serviceOpt1": "Website Development",
+    "serviceOpt2": "AI Chatbot",
+    "serviceOpt3": "Business Automation",
+    "serviceOpt4": "Other",
+    "messagePlaceholder": "Apne project ke baare mein batayein...",
+    "submitBtn": "✉️ Message Bhejein",
+    "footerNote": "Bilkul free hai. Koi hidden charges nahi."
+  },
+  "footer": {
+    "copyright": "© 2026 Anti Gravity 2.0"
+  },
+  "chatbot": {
+    "title": "Chat Support",
+    "greeting": "Namaste! 🙏 Main aapki kaise madad kar sakta hoon?",
+    "placeholder": "Type karein...",
+    "reply": "Dhanyavaad! 🙌 Humari team jaldi aapse contact karegi. Aap neeche form bhi bhar sakte hain."
+  }
+}

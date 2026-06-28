@@ -1,11 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
+import en from '@/i18n/en.json';
+import hi from '@/i18n/hi.json';
 
 export default function Chatbot() {
+  const params = useParams();
+  const lang = params.lang as string;
+  const dict = lang === 'hi' ? hi : en;
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { id: 1, text: "Namaste! 🙏 Main aapki kaise madad kar sakta hoon?", isBot: true }
+    { id: 1, text: dict.chatbot.greeting, isBot: true }
   ]);
   const [inputValue, setInputValue] = useState("");
 
@@ -20,7 +27,7 @@ export default function Chatbot() {
     setTimeout(() => {
       setMessages(prev => [...prev, { 
         id: Date.now(), 
-        text: "Dhanyavaad! 🙌 Humari team jaldi aapse contact karegi. Aap neeche form bhi bhar sakte hain.", 
+        text: dict.chatbot.reply, 
         isBot: true 
       }]);
     }, 800);
@@ -43,7 +50,7 @@ export default function Chatbot() {
           <div style={{ padding: '1rem 1.25rem', background: '#2563eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontSize: '1.1rem' }}>💬</span>
-              <span style={{ fontWeight: 600, fontSize: '0.95rem', color: '#fff' }}>Chat Support</span>
+              <span style={{ fontWeight: 600, fontSize: '0.95rem', color: '#fff' }}>{dict.chatbot.title}</span>
             </div>
             <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
           </div>
@@ -69,7 +76,7 @@ export default function Chatbot() {
             <input 
               type="text" value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Type karein..." 
+              placeholder={dict.chatbot.placeholder} 
               style={{ flex: 1, padding: '0.65rem 0.9rem', borderRadius: '10px', border: '1px solid #e5e5e5', fontSize: '0.9rem', outline: 'none', fontFamily: 'inherit' }}
             />
             <button type="submit" style={{ padding: '0 0.9rem', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontSize: '1rem' }}>➤</button>
