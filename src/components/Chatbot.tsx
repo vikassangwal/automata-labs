@@ -16,21 +16,47 @@ export default function Chatbot() {
   ]);
   const [inputValue, setInputValue] = useState("");
 
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
+  const [isLoading, setIsLoading] = useState(false);
 
-    const newMessages = [...messages, { id: Date.now(), text: inputValue, isBot: false }];
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isLoading) return;
+
+    const userMessage = inputValue;
+    const newMessages = [...messages, { id: Date.now(), text: userMessage, isBot: false }];
     setMessages(newMessages);
     setInputValue("");
+    setIsLoading(true);
 
-    setTimeout(() => {
+    try {
+      // Map messages to the format expected by the API
+      const apiMessages = newMessages.map(msg => ({
+        role: msg.isBot ? "assistant" : "user",
+        content: msg.text
+      }));
+
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages })
+      });
+
+      const data = await res.json();
+      
       setMessages(prev => [...prev, { 
         id: Date.now(), 
-        text: dict.chatbot.reply, 
+        text: data.reply || dict.chatbot.reply, 
         isBot: true 
       }]);
-    }, 800);
+    } catch (error) {
+      setMessages(prev => [...prev, { 
+        id: Date.now(), 
+        text: "Sorry, I am having trouble connecting right now.", 
+        isBot: true 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,6 +95,13 @@ export default function Chatbot() {
                 </div>
               </div>
             ))}
+            {isLoading && (
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{ padding: '0.65rem 0.9rem', borderRadius: '12px', background: '#f3f4f6', color: '#888', fontSize: '0.85rem' }}>
+                  Typing...
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
